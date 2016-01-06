@@ -1,4 +1,6 @@
 class BadgesController < ApplicationController
+  before_action :set_badge, only: [:update, :destroy]
+
   def create
     @badge = badge.new(badge_params)
     if @badge.save
@@ -9,8 +11,11 @@ class BadgesController < ApplicationController
   end
 
   def update
-    if @badge.update(badge_params)
-      head :no_content
+    p "OUR PARAMS:"
+    if badge_params["voteType"] == "up"
+      @badge.update(points: @badge.points + 1 )
+    elsif badge_params["voteType"] == "down"
+      @badge.update(points: @badge.points - 1 )
     else
       err
     end
@@ -23,11 +28,11 @@ class BadgesController < ApplicationController
 
   private
     def set_badge
-      @badge = badge.find(params[:id])
+      @badge = Badge.find(params[:id])
     end
 
     def badge_params
-      params.permit(:points, :user_id, :title, :id)
+      params.permit(:points, :user_id, :title, :id, :voteType)
     end
 
     def err
