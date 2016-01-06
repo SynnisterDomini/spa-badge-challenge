@@ -9,5 +9,5 @@ gem 'sprockets-rails'
 gem 'rack-cors'
 
 group :development, :test do
-gem 'debugger'
+# gem 'byebug'
 end
